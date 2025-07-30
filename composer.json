@@ -1,5 +1,5 @@
 {
-    "name": "triplewood/module-cache-optimizer",
+    "name": "triplewood-de/module-cache-optimizer",
     "description": "Set public cache headers for guest users to improve TTFB ( e.g. with cloudflare)",
     "keywords": ["Magento 2", "browser cache", "cache", "performance", "Cloudflare", "Cloudflare Cache Control"],
     "require": {
