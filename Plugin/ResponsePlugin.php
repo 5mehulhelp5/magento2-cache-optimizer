@@ -31,11 +31,15 @@ class ResponsePlugin
         }
 
         $isLoggedIn = $this->httpContext->getValue(ContextModel::CONTEXT_AUTH);
+        $moduleName = $this->request->getModuleName();
+        $moduleAction = $this->request->getActionName();
 
         if ($this->request->isGet()
             && !$isLoggedIn
-            && !str_contains($this->request->getRequestUri(), '/checkout/')
-            && !str_contains($this->request->getRequestUri(), '/customer/')
+            && (
+                ($moduleName === 'catalog' && $moduleAction === 'view')
+                || ($moduleName === 'cms' && $moduleAction === 'view')
+            )
         ) {
             $header = $this->scopeConfig->getValue(
                 'guest_cache_optimization/settings/cache_header',
