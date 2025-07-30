@@ -1,45 +1,67 @@
 Triplewood Cache Optimizer
 ==========================
 
-Magento 2 sends the following cache-control header on HTML responses (not static assets):
+Magento 2 typically sends the following Cache-Control header on HTML responses (excluding static assets):
 
     Cache-Control: max-age=0, must-revalidate, no-cache, no-store
 
-This essentially instructs the browser not to cache any HTML pages at all. This means the browser will always
-re-request full page HTML, even on back/forward navigation. 
+This instructs the browser not to cache any HTML pages. As a result, the browser re-requests the full-page HTML
+on every navigation, even for back and forward actions, reducing perceived performance.
 
-This extension is only recommended if you run hyvä on your Magento instance and understand possible security risks.
-When using this extension you must not show any user-specific data on initial page load for non-logged-in users. 
-You can, however, load specific data via ajax after initial page load. 
+> **Caution**: This module is recommended only if you run Hyvä on your Magento instance and fully understand the
+> associated security implications. Additionally, this is **NOT** thoroughly tested yet. It may not cover all
+> security related aspects of your project!
 
-**Why Magento Does This**
+To safely use this module:
 
-- Magento only puts CSS, Fonts, JS and image files into the browser cache. HTML-responses are not cached.
-- Magento HTML may contain user-specific content (cart totals, customer name, wishlist count, prices). Caching HTML in the browser risks showing stale data for logged-in users if a developer screws up implementation.
-- Magento relies on server-side caching (Varnish / built-in FPC), not browser cache, for performance.
+- Do not show any user-specific data on the initial page load for non-logged-in users.
+- Load sensitive data dynamically via AJAX after the page has rendered.
+ 
+Why Magento Does This
+---------------------
 
-**The consequences**
+- Magento caches CSS, fonts, JavaScript, and images in the browser, but not HTML pages.
+- This is a safety measure: HTML responses may contain user-specific data (e.g., cart totals, customer name, wishlist count, or prices).
+- If browser caching is enabled and HTML is reused improperly, it may display stale or incorrect data to logged-in users.
+- Magento therefore relies on server-side caching (Varnish or built-in FPC), not browser caching.
 
-Magento errs on the side of caution. Even for guests, where caching HTML might be fine, it globally disables
-caching to avoid complexity and edge cases. By disabling the browser cache, services like Cloudflare cannot apply their
-HTML caching techniques, making Magento run slower than necessary. Also back/forward caching techniques won't work
-and Magento feels slower than need be.
+The consequences
+----------------
 
-This module enables browser-caching for non-dynamic guest-pages:
+While cautious, this strategy comes at a cost:
+
+- Even guest users receive uncached HTML, despite often seeing the same content.
+- This prevents CDNs like Cloudflare from applying their own HTML caching optimizations.
+- Browser features like back/forward caching (bfcache) are disabled, making Magento feel slower than necessary.
+
+What This Module Does
+---------------------
+
+It enables browser caching for **non-dynamic guest pages**, such as:
 
 - CMS pages
-- product pages
-- category pages
+- Product detail pages
+- Category pages
 
-The following pages are explicitly excluded:
+The following routes are explicitly excluded from caching:
 
-- checkout pages
-- customer pages
+- Checkout
+- Customer account pages
 
 ## Installation details
 
+In your Magento `composer.json` add the following lines under the "repositories" section:
+
+    "repositories": {
+        // ..
+        "triplewood-de/module-cache-optimizer": {
+            "type": "vcs",
+            "url": "https://github.com/triplewood-de/magento2-cache-optimizer"
+        }
+    },
+
 You can install this module via composer
 
-    composer install triplewood-de/module-cache-optimizer
+    composer require triplewood-de/module-cache-optimizer
     bin/magento module:enable Triplewood_CacheOptimizer
     bin/magento setup:upgrade
