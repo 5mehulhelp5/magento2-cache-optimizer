@@ -16,6 +16,7 @@ To safely use this module:
 
 - Do not show any user-specific data on the initial page load for non-logged-in users.
 - Load sensitive data dynamically via AJAX after the page has rendered.
+- Check your varnish-config if you are overriding `resp.http.Cache-Control`. If so, this extension will not do anything.
  
 Why Magento Does This
 ---------------------
