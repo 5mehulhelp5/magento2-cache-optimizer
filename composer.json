@@ -1,0 +1,41 @@
+{
+    "name": "triplewood/module-cache-optimizer",
+    "description": "Set public cache headers for guest users to improve TTFB ( e.g. with cloudflare)",
+    "keywords": ["Magento 2", "browser cache", "cache", "performance", "Cloudflare", "Cloudflare Cache Control"],
+    "require": {
+        "php": ">=8.1"
+    },
+    "type": "magento2-module",
+    "version": "1.0.0",
+    "license": "OSL-3.0",
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Triplewood\\GuestCacheControl\\": ""
+        }
+    },
+    "authors": [
+        {
+            "name": "Manuel Rülke",
+            "email": "manuel.ruelke@triplewood.de",
+            "homepage": "https://triplewood.de",
+            "role": "Developer / CEO"
+        }
+    ],
+    "require": {
+        "php": ">=8.1",
+        "magento/framework": "*",
+        "magento/module-customer": "*",
+        "magento/module-store": "*"
+    },
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Triplewood\\CacheOptimizer\\": ""
+        }
+    }
+}

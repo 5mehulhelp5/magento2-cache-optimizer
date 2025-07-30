@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <guest_cache_optimization>
+            <settings>
+                <active>1</active>
+                <cache_header>public, max-age=600, s-maxage=3600</cache_header>
+            </settings>
+        </guest_cache_optimization>
+    </default>
+</config>
